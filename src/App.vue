@@ -6,7 +6,7 @@
 		:cfg-slots="cfgSlots">
 
 		<template v-slot:header>
-			Mon document
+			Mon document par défaut
 		</template>
 
 
