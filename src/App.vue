@@ -6,7 +6,17 @@
 		:cfg-slots="cfgSlots">
 
 		<template v-slot:header>
-			Mon document par défaut
+			<div class="mx-2" v-if="openedElement">
+				<router-link to="/" custom v-slot="{ navigate, href }">
+					<a class="btn btn-dark" :href="href" @click="navigate">
+						<i class="bi bi-arrow-left"></i>
+					</a>
+				</router-link>
+				<button class="btn btn-dark">
+					<i class="bi bi-file-earmark me-1"></i>
+					{{openedElement.name}}
+				</button>
+			</div>
 		</template>
 
 
@@ -19,14 +29,14 @@
 
 		<template v-slot:list>
 			<AppMenu>
-				<AppMenuItem href="/" icon="bi bi-file-earmark">Élément 1</AppMenuItem>
-				<AppMenuItem href="/" icon="bi bi-file-earmark">Élément 2</AppMenuItem>
-				<AppMenuItem href="/" icon="bi bi-file-earmark">Élément 3</AppMenuItem>
+				<AppMenuItem :href="'/element/'+el.id" icon="bi bi-file-earmark" v-for="el in elements" :key="el.id">Élément {{el.id}}</AppMenuItem>
 			</AppMenu>
 		</template>
 
 		<template v-slot:core>
-			<router-view/>
+			<div class="px-2 bg-light">
+				<router-view/>
+			</div>
 		</template>
 
 	</AppWrapper>
@@ -38,6 +48,7 @@
 import AppWrapper from '@/components/pebble-ui/AppWrapper.vue'
 import AppMenu from '@/components/pebble-ui/AppMenu.vue'
 import AppMenuItem from '@/components/pebble-ui/AppMenuItem.vue'
+import { mapState } from 'vuex'
 
 export default {
 
@@ -45,11 +56,24 @@ export default {
 		return {
 			cfg: {
 				moduleLabel: 'Sample module',
-				aside: false,
-				app_mode: "standalone"
+				aside: true,
+				app_mode: "default"
 			},
 			cfgMenu: {},
 			cfgSlots: {}
+		}
+	},
+
+	computed: {
+		...mapState(['elements', 'openedElement'])
+	},
+
+	methods: {
+		/**
+		 * Ferme l'élément ouvert dans le state
+		 */
+		closeElement() {
+			this.$store.dispatch('closeElement');
 		}
 	},
 

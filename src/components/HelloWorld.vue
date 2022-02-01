@@ -1,4 +1,12 @@
 <template>
+
+<div>
+  <h1>Bienvenue dans votre application</h1>
+
+  <p>
+    
+  </p>
+</div>
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
