@@ -71,6 +71,15 @@ export default createStore({
 		 */
 		close(state) {
 			state.openedElement = null;
+		},
+
+		/**
+		 * Rafraichie la liste des éléments chargés
+		 * @param {Array} elements   Liste des éléments à rafraichir
+		 * @param {String} option	 replace, add, update
+		 */
+		refreshElements(state, payload) {
+			state.elements = payload;
 		}
 	},
 	actions: {

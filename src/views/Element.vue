@@ -1,8 +1,9 @@
 <template>
     <div v-if="openedElement">
         <h1>{{openedElement.name}}</h1>
+        <p>{{openedElement.description}}</p>
         <div>{{openedElement.id}}</div>
-        <input type="text" :value="openedElement.name" class="form-control">
+        <pre>{{openedElement}}</pre>
         
     </div>
 </template>

@@ -29,7 +29,7 @@
 
 		<template v-slot:list>
 			<AppMenu>
-				<AppMenuItem :href="'/element/'+el.id" icon="bi bi-file-earmark" v-for="el in elements" :key="el.id">Élément {{el.id}}</AppMenuItem>
+				<AppMenuItem :href="'/element/'+el.id" icon="bi bi-file-earmark" v-for="el in elements" :key="el.id">{{el.name}}</AppMenuItem>
 			</AppMenu>
 		</template>
 
@@ -49,6 +49,7 @@ import AppWrapper from '@/components/pebble-ui/AppWrapper.vue'
 import AppMenu from '@/components/pebble-ui/AppMenu.vue'
 import AppMenuItem from '@/components/pebble-ui/AppMenuItem.vue'
 import { mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
 
@@ -81,6 +82,29 @@ export default {
 		AppWrapper,
 		AppMenu,
 		AppMenuItem
+	},
+
+	mounted() {
+		let ax = axios.create({
+            baseURL: 'http://local.fe.tld/api/'
+        });
+
+        ax.get('/sample/GET/list')
+        .then((resp) => {
+            let apiResp = resp.data;
+
+            if (apiResp.status === 'OK') {
+                this.$store.commit('refreshElements', apiResp.data);
+            }
+            else {
+                alert(apiResp.message);
+                console.error(apiResp);
+            }
+        })
+        .catch((error) => {
+            alert(error);
+            console.error(error);
+        });
 	}
 
 }
