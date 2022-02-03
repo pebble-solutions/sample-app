@@ -45,7 +45,7 @@ origin git@github.com:<account_name>/<app_name>.git (push)
 Une fois la connexion établie, il est possible d'envoyer le premier commit sur le dépôt distant.
 
 ```shell
-git add * && git commit -m "Création de l'application basée sur sample" && git push
+git add . && git commit -m "Création de l'application basée sur sample" && git push
 ```
 
 ### Mettre à jour les sous modules
