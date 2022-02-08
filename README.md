@@ -114,6 +114,24 @@ pebbleapp upgrade
 | 1.0.2   | Correction de bug : démultiplication des fichiers avec l'argument `upgrade` |
 | 1.0.3   | Correction de bug : argument `version` non fonctionnel |
 
+## Configuration initiale de l'application
+
+Ouvrir le fichier **src/config.json**.
+
+| Clé de configuration      | Type      | Usage                                                                    | Défaut        |
+|---------------------------|-----------|--------------------------------------------------------------------------|---------------|
+| `cfg.module`              | String    | Nom du module ou de l'application tel que référencé au niveau du serveur | *sample*      |
+| `cfg.moduleLabel`         | String    | Nom du module ou de l'application pour l'affichage                       | *Sample Module* |
+| `cfg.aside`               | Boolean   | Affiche ou non la barre latérale des raccourcis                          | *true* |
+| `cfg.app_mode`            | String    | *default* : Affichage de l'application avec l'ensemble des éléments d'interface. *standalone* Affichage de l'application avec une interface n'autorisant pas la navigation vers d'autres modules | *default* |
+| `cfgMenu.href`            | String    | Lien du menu de configuration du module. Si null, le module n'a pas de vue de configuration | *null* |
+| `cfgSlots.menu`           | Boolean   | Affiche l'espace Menu | *true* |
+| `cfgSlots.list`           | Boolean   | Affiche l'espace Liste des éléments chargés | *true* |
+| `cfgSlots.core`           | Boolean   | Affiche l'espace principal de l'application | *true* |
+| `cfgSlots.header`         | Boolean   | Affiche la barre d'outil en en-tête de l'application | *true* |
+| `api.baseURL`             | String    | URL de base pour se connecter à l'API | *http://local.fe.tld/api/* |
+| `api.elements`            | String    | Nom de l'API de base à utiliser pour lister, afficher et enregistrer les éléments principaux (Ex : *projet*) | *sample* |
+
 ## Paramétrage du serveur local
 
 Pour un développement local optimal, voici les pré-requis indispensables :
