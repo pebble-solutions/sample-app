@@ -110,9 +110,9 @@ pebbleapp upgrade
 | 1.0     | Création initiale de l'application.                  |
 | 1.0.1   | Ajout des arguments `version`, `upgrade`                       |
 |         | Mise à jour de la documentation en lançant le programme sans argument |
-|         | Correction du bug de d'initialisation de l'historique du dépôt avec l'argument `create` |
-| 1.0.2   | Correction du bug de démultiplication des fichiers avec l'argument `upgrade` |
-| 1.0.3   | Correction du bug : argument `version` non fonctionnel |
+|         | Correction de bug : initialisation de l'historique du dépôt avec l'argument `create` afin de pouvoir connecter un serveur github |
+| 1.0.2   | Correction de bug : démultiplication des fichiers avec l'argument `upgrade` |
+| 1.0.3   | Correction de bug : argument `version` non fonctionnel |
 
 ## Paramétrage du serveur local
 
