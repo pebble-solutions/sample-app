@@ -26,6 +26,10 @@ pebbleapp create <nom_application>
 Un nouveau dépôt est initialisé dans le dossier <nom_application>. Par défaut, ce dépôt est local, c'est à dire qu'il n'est lié à aucun serveur sur github. Il sera nécessaire de créer manuellement le dépôt sur github afin de lier au nouveau projet :
 
 ```shell
+cd <nom_application>
+```
+
+```shell
 git remote add origin git@github.com:<account_name>/<app_name>.git
 ```
 
@@ -45,7 +49,7 @@ origin git@github.com:<account_name>/<app_name>.git (push)
 Une fois la connexion établie, il est possible d'envoyer le premier commit sur le dépôt distant.
 
 ```shell
-git add . && git commit -m "Création de l'application basée sur sample" && git push
+git push -u origin main
 ```
 
 ### Mettre à jour les sous modules
