@@ -1,6 +1,6 @@
 # Sample
 
-## Utilisation de pebbleapp
+## Gestion des applications avec pebbleapp
 
 Il est préférable d'utiliser le script pebbleapp pour créer, mettre à jour, lancer et compiler les projets d'applications basés sur Sample.
 
@@ -102,3 +102,11 @@ pebbleapp version
 ```shell
 pebbleapp upgrade
 ```
+
+## Paramétrage du serveur local
+
+Pour un développement local optimal, voici les pré-requis indispensables :
+
+- Le serveur contenant l'API doit être sur local.fe.tld
+- Le serveur NE DOIT PAS nécessiter un certificat SSL (https désactivé, voir https://github.com/cairnmanagement/docker#d%C3%A9sactiver-le-https-du-serveur-de-production)
+- La machine locale doit disposer de git et npm (`sudo apt install git npm`)
