@@ -1,0 +1,21 @@
+{
+    "cfg": {
+        "module": "sample",
+        "moduleLabel": "Sample module",
+        "aside": true,
+        "app_mode": "default"
+    },
+    "cfgMenu": {
+        "href": null
+    },
+    "cfgSlots": {
+        "menu": true,
+        "list": true,
+        "core": true,
+        "header": true
+    },
+    "api": {
+        "baseURL": "http://local.fe.tld/api/",
+        "elements": "sample"
+    }
+}

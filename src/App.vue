@@ -51,17 +51,15 @@ import AppMenuItem from '@/components/pebble-ui/AppMenuItem.vue'
 import { mapState } from 'vuex'
 import axios from 'axios'
 
+import CONFIG from "@/config.json"
+
 export default {
 
 	data() {
 		return {
-			cfg: {
-				moduleLabel: 'Sample module',
-				aside: true,
-				app_mode: "default"
-			},
-			cfgMenu: {},
-			cfgSlots: {}
+			cfg: CONFIG.cfg,
+			cfgMenu: CONFIG.cfgMenu,
+			cfgSlots: CONFIG.cfgSlots
 		}
 	},
 
@@ -86,10 +84,10 @@ export default {
 
 	mounted() {
 		let ax = axios.create({
-            baseURL: 'http://local.fe.tld/api/'
+            baseURL: CONFIG.api.baseURL
         });
 
-        ax.get('/sample/GET/list')
+        ax.get('/'+CONFIG.api.elements+'/GET/list')
         .then((resp) => {
             let apiResp = resp.data;
 
