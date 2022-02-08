@@ -6,10 +6,15 @@ Il est préférable d'utiliser le script pebbleapp pour créer, mettre à jour, 
 
 ### Récupérer le script pebbleapp
 ```shell
-sudo wget https://storage.googleapis.com/pebble-public-cdn/pebbleapp -P /usr/local/sbin && sudo chmod +x /usr/local/sbin/pebbleapp
+sudo wget https://storage.googleapis.com/pebble-public-cdn/pebbleapp -O /usr/local/sbin/pebbleapp && sudo chmod +x /usr/local/sbin/pebbleapp
 ```
+Cette commande est à exécuter une seule fois par poste. Pour mettre à jour le programme, voir pebbleapp upgrade.
+
+**Dernière version de pebbleapp : 1.0.1**
 
 ### Créer un nouveau projet d'application
+
+*Version supportée : 1.0*
 
 Par convention, on développera les projets d'application dans le dossier /srv/www/apps/<nom_application>
 
@@ -54,6 +59,8 @@ git push -u origin main
 
 ### Mettre à jour les sous modules
 
+*Version supportée : 1.0*
+
 L'application utilise des sous-modules distants qui peuvent être mis à jour depuis le dossier de travail :
 
 ```shell
@@ -66,35 +73,32 @@ pebbleapp update
 
 ### Lancer le serveur
 
+*Version supportée : 1.0*
+
 ```shell
 pebbleapp serve
 ```
 
 ### Compiler l'application
 
+*Version supportée : 1.0*
+
 ```shell
 pebbleapp build
 ```
 
-## Project setup
-```
-npm install
+### Version de pebbleapp
+
+*Version supportée : 1.0.1*
+
+```shell
+pebbleapp version
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Mise à jour de pebbleapp
 
-### Compiles and minifies for production
-```
-npm run build
-```
+*Version supportée : 1.0.1*
 
-### Lints and fixes files
+```shell
+pebbleapp upgrade
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
