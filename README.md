@@ -10,7 +10,7 @@ sudo wget https://storage.googleapis.com/pebble-public-cdn/pebbleapp -O /usr/loc
 ```
 Cette commande est à exécuter une seule fois par poste. Pour mettre à jour le programme, voir pebbleapp upgrade.
 
-**Dernière version de pebbleapp : 1.0.1**
+**Dernière version de pebbleapp : 1.0.2**
 
 ### Créer un nouveau projet d'application
 
@@ -97,7 +97,7 @@ pebbleapp version
 
 ### Mise à jour de pebbleapp
 
-*Version supportée : 1.0.1*
+*Version supportée : 1.0.2*
 
 ```shell
 pebbleapp upgrade
