@@ -109,6 +109,7 @@ pebbleapp upgrade
 |---------|------------------------------------------------------|
 | 1.0     | Création initiale de l'application.                  |
 | 1.0.1   | Ajout des `version`, `upgrade`                       |
+|         | Mise à jour de la documentation en lançant le programme sans argument |
 |         | Correction du bug de d'initialisation de l'historique du dépôt avec la commande `create` |
 | 1.0.2   | Correction du bug de démultiplication des fichiers avec la commande `upgrade` |
 
