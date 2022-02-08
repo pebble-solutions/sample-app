@@ -23,20 +23,7 @@ export default createStore({
 				THEME_COLOR: 'black'
 			}
 		},
-		elements: [
-			{
-				id:1,
-				name: "Mon titre"
-			},
-			{
-				id:2,
-				name: "Mon titre 2"
-			},
-			{
-				id:3,
-				name: "Mon nouveau titre"
-			}
-		],
+		elements: [],
 		openedElement: null
 	},
 	getters: {
