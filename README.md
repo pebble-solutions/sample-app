@@ -10,11 +10,11 @@ sudo wget https://storage.googleapis.com/pebble-public-cdn/pebbleapp -O /usr/loc
 ```
 Cette commande est à exécuter une seule fois par poste. Pour mettre à jour le programme, voir pebbleapp upgrade.
 
-**Dernière version de pebbleapp : 1.0.1**
+**Dernière version de pebbleapp : 1.0.3**
 
 ### Créer un nouveau projet d'application
 
-*Version supportée : 1.0*
+*Version supportée : 1.0.1*
 
 Par convention, on développera les projets d'application dans le dossier /srv/www/apps/<nom_application>
 
@@ -89,7 +89,7 @@ pebbleapp build
 
 ### Version de pebbleapp
 
-*Version supportée : 1.0.1*
+*Version supportée : 1.0.3*
 
 ```shell
 pebbleapp version
@@ -97,11 +97,22 @@ pebbleapp version
 
 ### Mise à jour de pebbleapp
 
-*Version supportée : 1.0.1*
+*Version supportée : 1.0.2*
 
 ```shell
 pebbleapp upgrade
 ```
+
+### Release logs
+
+| Version | Mise à jour                                          |
+|---------|------------------------------------------------------|
+| 1.0     | Création initiale de l'application.                  |
+| 1.0.1   | Ajout des arguments `version`, `upgrade`                       |
+|         | Mise à jour de la documentation en lançant le programme sans argument |
+|         | Correction de bug : initialisation de l'historique du dépôt avec l'argument `create` afin de pouvoir connecter un serveur github |
+| 1.0.2   | Correction de bug : démultiplication des fichiers avec l'argument `upgrade` |
+| 1.0.3   | Correction de bug : argument `version` non fonctionnel |
 
 ## Paramétrage du serveur local
 
