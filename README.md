@@ -14,7 +14,7 @@ Cette commande est à exécuter une seule fois par poste. Pour mettre à jour le
 
 ### Créer un nouveau projet d'application
 
-*Version supportée : 1.0*
+*Version supportée : 1.0.1*
 
 Par convention, on développera les projets d'application dans le dossier /srv/www/apps/<nom_application>
 
@@ -102,6 +102,15 @@ pebbleapp version
 ```shell
 pebbleapp upgrade
 ```
+
+### Release logs
+
+| Version | Mise à jour                                          |
+|---------|------------------------------------------------------|
+| 1.0     | Création initiale de l'application.                  |
+| 1.0.1   | Ajout des `version`, `upgrade`                       |
+|         | Correction du bug de d'initialisation de l'historique du dépôt avec la commande `create` |
+| 1.0.2   | Correction du bug de démultiplication des fichiers avec la commande `upgrade` |
 
 ## Paramétrage du serveur local
 
