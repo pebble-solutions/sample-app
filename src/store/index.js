@@ -45,10 +45,10 @@ export default createStore({
 		/**
 		 * Charge un objet dans openedElement
 		 * @param {Object} state Le state de l'instance VueX
-		 * @param {Object} payload L'ID de l'élément à charger
+		 * @param {Integer} id L'ID de l'élément à charger
 		 */
-		open(state, payload) {
-			state.openedElement = payload;
+		open(state, id) {
+			state.openedElement = id;
 		},
 
 
@@ -61,12 +61,62 @@ export default createStore({
 		},
 
 		/**
-		 * Rafraichie la liste des éléments chargés
-		 * @param {Array} elements   Liste des éléments à rafraichir
-		 * @param {String} option	 replace, add, update
+		 * Remplace la liste des éléments chargés avec une nouvelle liste
+		 * @param {Object} state		Le state de l'instance VueX
+		 * @param {Array} elements		La nouvelle liste d'éléments
 		 */
-		refreshElements(state, payload) {
-			state.elements = payload;
+		replaceElements(state, elements) {
+			state.elements = elements;
+		},
+
+		/**
+		 * Rafraichie la liste des éléments chargés à partir d'une autre liste.
+		 * - si un élément existe dans state et dans elements, il est actualisé avec le nouveau
+		 * - si un élément est dans elements mais pas dans state, il est ajouté
+		 * @param {Object} state		Le state de l'instance VueX
+		 * @param {Array} elements		La nouvelle liste d'éléments
+		 */
+		updateElements(state, elements) {
+			elements.forEach(element => {
+				let stateEl = state.elements.find(e => e.id === element.id);
+
+				// Mise à jour d'un élément existant
+				if (stateEl) {
+					for (let key in element) {
+						stateEl[key] = element[key];
+					}
+				}
+				// Ajout d'un élément existant
+				else {
+					state.elements.push(element);
+				}
+			});
+		},
+
+		/**
+		 * Retire des éléments de la liste des éléments chargés
+		 * @param {Object} state Le state de l'instance vueX
+		 * @param {Array} elements Les ID des éléments à retirer
+		 */
+		removeElements(state, elements) {
+			elements.forEach(id => {
+				let index = state.elements.findIndex(e => e.id === id);
+
+				if (index !== -1) {
+					state.elements.splice(index, 1);
+				}
+			});
+		},
+
+		/**
+		 * Met à jour les données de l'élément chargé
+		 * @param {Object} state Le state de l'instance vueX
+		 * @param {Object} data Liste clé valeur des infos à mettre à jour
+		 */
+		updateOpened(state, data) {
+			for (let key in data) {
+				state.openedElement[key] = data[key];
+			}
 		}
 	},
 	actions: {
@@ -93,6 +143,41 @@ export default createStore({
 		 */
 		unload(context) {
 			context.commit('close');
+		},
+
+		/**
+		 * Met à jour la liste des éléments chargés
+		 * @param {Object} context L'instance VueX
+		 * @param {Object} payload Les paramètres de rafraichissement
+		 * - action			update (default), replace, remove
+		 * - elements		la liste des éléments
+		 */
+		refreshElements(context, payload) {
+			if (!('action' in payload)) {
+				payload.action = 'update';
+			}
+
+			if (payload.action == 'update') {
+				context.commit('updateElements', payload.elements);
+			}
+			else if (payload.action == 'replace') {
+				context.commit('replaceElements', payload.elements);
+			}
+			else if (payload.action == 'remove') {
+				context.commit('removeElements', payload.elements);
+			}
+			else {
+				throw new Error(`La mutation ${payload.action} n'existe pas.`);
+			}
+		},
+
+		/**
+		 * Met à jour les infos de l'élément ouvert avec des données
+		 * @param {Object} context L'instance vueX
+		 * @param {Object} data Liste clé valeur des informations à mettre à jour
+		 */
+		refreshOpened(context, data) {
+			context.commit('updateOpened', data);
 		}
 	},
 	modules: {

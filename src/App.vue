@@ -48,8 +48,8 @@
 import AppWrapper from '@/components/pebble-ui/AppWrapper.vue'
 import AppMenu from '@/components/pebble-ui/AppMenu.vue'
 import AppMenuItem from '@/components/pebble-ui/AppMenuItem.vue'
-import { mapState } from 'vuex'
-import axios from 'axios'
+import { mapActions, mapState } from 'vuex'
+import App from './js/app/app.js'
 
 import CONFIG from "@/config.json"
 
@@ -59,7 +59,11 @@ export default {
 		return {
 			cfg: CONFIG.cfg,
 			cfgMenu: CONFIG.cfgMenu,
-			cfgSlots: CONFIG.cfgSlots
+			cfgSlots: CONFIG.cfgSlots,
+			appController: null,
+			pending: {
+				elements: true
+			}
 		}
 	},
 
@@ -68,12 +72,7 @@ export default {
 	},
 
 	methods: {
-		/**
-		 * Ferme l'élément ouvert dans le state
-		 */
-		closeElement() {
-			this.$store.dispatch('closeElement');
-		}
+		...mapActions(['closeElement'])
 	},
 
 	components: {
@@ -83,26 +82,18 @@ export default {
 	},
 
 	mounted() {
-		let ax = axios.create({
-            baseURL: CONFIG.api.baseURL
-        });
 
-        ax.get('/'+CONFIG.api.elements+'/GET/list')
-        .then((resp) => {
-            let apiResp = resp.data;
+		this.appController = new App({
+			store: this.$store,
+			api: CONFIG.api,
+			name: CONFIG.name,
+			cfg: CONFIG.cfg,
+			cfgMenu: CONFIG.cfgMenu,
+			cfgSlots: CONFIG.cfgSlots,
+			root: this
+		});
 
-            if (apiResp.status === 'OK') {
-                this.$store.commit('refreshElements', apiResp.data);
-            }
-            else {
-                alert(apiResp.message);
-                console.error(apiResp);
-            }
-        })
-        .catch((error) => {
-            alert(error);
-            console.error(error);
-        });
+		this.appController.listElements();
 	}
 
 }

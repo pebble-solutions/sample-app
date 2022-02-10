@@ -1,4 +1,5 @@
 {
+    "name": "sample",
     "cfg": {
         "module": "sample",
         "moduleLabel": "Sample module",
