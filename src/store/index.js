@@ -13,11 +13,7 @@ export default createStore({
 			}
 		],
 		activeStructureId: 1,
-		sessLogin: {
-			id: 1,
-			login: "guillaume",
-			type: 6
-		},
+		sessLogin: null,
 		mkg: {
 			config: {
 				THEME_COLOR: 'black'
