@@ -2,18 +2,9 @@ import { createStore } from 'vuex'
 
 export default createStore({
 	state: {
-		structures: [
-			{
-				id: 1,
-				nom_interne: "Cairn",
-			},
-			{
-				id: 2,
-				nom_interne: "FE"
-			}
-		],
-		activeStructureId: 1,
-		sessLogin: null,
+		structures: [],
+		activeStructureId: null,
+		login: null,
 		mkg: {
 			config: {
 				THEME_COLOR: 'black'
@@ -113,6 +104,24 @@ export default createStore({
 			for (let key in data) {
 				state.openedElement[key] = data[key];
 			}
+		},
+
+		/**
+		 * Enregistre le login dans le store
+		 * @param {Object} state Le state de l'instance vueX
+		 * @param {Object} login L'objet Login
+		 */
+		setLogin(state, login) {
+			state.login = login;
+		},
+
+		/**
+		 * Enregistre les structures chargées dans le store
+		 * @param {Object} state Le state de l'instance vueX
+		 * @param {Array} structures La liste des structures
+		 */
+		setStructures(state, structures) {
+			state.structures = structures;
 		}
 	},
 	actions: {
@@ -174,6 +183,25 @@ export default createStore({
 		 */
 		refreshOpened(context, data) {
 			context.commit('updateOpened', data);
+		},
+
+		/**
+		 * Enregistre l'ouverture d'une session
+		 * @param {Object} context L'instance vueX
+		 * @param {Object} payload Un objet contenant une clé login et une clé structure
+		 */
+		login(context, payload) {
+			context.commit('setLogin', payload.login);
+			context.commit('setStructures', payload.structures);
+		},
+
+		/**
+		 * Enregistre la fermeture d'une session
+		 * @param {Object} context L'instance vueX
+		 */
+		logout(context) {
+			context.commit('setLogin', null);
+			context.commit('setStructures', []);
 		}
 	},
 	modules: {
