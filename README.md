@@ -10,7 +10,7 @@ sudo wget https://storage.googleapis.com/pebble-public-cdn/pebbleapp -O /usr/loc
 ```
 Cette commande est à exécuter une seule fois par poste. Pour mettre à jour le programme, voir pebbleapp upgrade.
 
-**Dernière version de pebbleapp : 1.0.3**
+**Dernière version de pebbleapp : 1.0.4**
 
 ### Créer un nouveau projet d'application
 
@@ -59,7 +59,7 @@ git push -u origin main
 
 ### Mettre à jour les sous modules
 
-*Version supportée : 1.0*
+*Version supportée : 1.0.4*
 
 L'application utilise des sous-modules distants qui peuvent être mis à jour depuis le dossier de travail :
 
@@ -113,6 +113,7 @@ pebbleapp upgrade
 |         | Correction de bug : initialisation de l'historique du dépôt avec l'argument `create` afin de pouvoir connecter un serveur github |
 | 1.0.2   | Correction de bug : démultiplication des fichiers avec l'argument `upgrade` |
 | 1.0.3   | Correction de bug : argument `version` non fonctionnel |
+| 1.0.4   | Correction de bug : update ne prenait pas en compte les branches détachées (detached HEAD) |
 
 ## Configuration initiale de l'application
 
@@ -131,6 +132,7 @@ Ouvrir le fichier **src/config.json**.
 | `cfgSlots.header`         | Boolean   | Affiche la barre d'outil en en-tête de l'application | *true* |
 | `api.baseURL`             | String    | URL de base pour se connecter à l'API | *http://local.fe.tld/api/* |
 | `api.elements`            | String    | Nom de l'API de base à utiliser pour lister, afficher et enregistrer les éléments principaux (Ex : *projet*) | *sample* |
+| `firebaseConfig`          | Object    | Configuration publique du compte firebase | *null* |
 
 ## Paramétrage du serveur local
 
