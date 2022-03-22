@@ -8,16 +8,31 @@
 		@auth-change="setLocal_user">
 
 		<template v-slot:header>
-			<div class="mx-2" v-if="openedElement">
+			<div class="mx-2 d-flex align-items-center" v-if="openedElement">
 				<router-link to="/" custom v-slot="{ navigate, href }">
-					<a class="btn btn-dark" :href="href" @click="navigate">
+					<a class="btn btn-dark me-2" :href="href" @click="navigate">
 						<i class="bi bi-arrow-left"></i>
 					</a>
 				</router-link>
-				<button class="btn btn-dark">
-					<i class="bi bi-file-earmark me-1"></i>
-					{{openedElement.name}}
-				</button>
+				<router-link :to="'/element/'+openedElement.id+'/properties'" custom v-slot="{ navigate, href }">
+					<a class="btn btn-dark me-2" :href="href" @click="navigate">
+						<i class="bi bi-file-earmark me-1"></i>
+						{{openedElement.name}}
+					</a>
+				</router-link>
+
+				<div class="dropdown">
+					<button class="btn btn-dark dropdown-toggle" type="button" id="fileDdMenu" data-bs-toggle="dropdown" aria-expanded="false">
+						Fichier
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="fileDdMenu">
+						<li>
+							<router-link :to="'/element/'+openedElement.id+'/informations'" custom v-slot="{ navigate, href }">
+								<a class="dropdown-item" :href="href" @click="navigate">Informations</a>
+							</router-link>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</template>
 

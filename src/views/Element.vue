@@ -5,6 +5,7 @@
         <div>{{openedElement.id}}</div>
         <pre>{{openedElement}}</pre>
         
+        <router-view></router-view>
     </div>
 </template>
 

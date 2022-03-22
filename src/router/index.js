@@ -18,7 +18,17 @@ const routes = [
   {
     path: '/element/:id',
     name: 'Element',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Element.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Element.vue'),
+    children: [
+      {
+        path: 'properties',
+        component: () => import('../views/ElementProperties.vue')
+      },
+      {
+        path: 'informations',
+        component: () => import('../views/ElementInformations.vue')
+      }
+    ]
   }
 ]
 

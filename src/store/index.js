@@ -11,7 +11,8 @@ export default createStore({
 			}
 		},
 		elements: [],
-		openedElement: null
+		openedElement: null,
+		tmpElement: null
 	},
 	getters: {
 		activeStructure(state) {
@@ -122,6 +123,15 @@ export default createStore({
 		 */
 		setStructures(state, structures) {
 			state.structures = structures;
+		},
+
+		/**
+		 * Enregistre une donnée dubliqué de openedElement
+		 * @param {Object} state Le state de l'instance vueX
+		 * @param {Object} data Un objet identique à la structure de openedElement
+		 */
+		tmpElement(state, data) {
+			state.tmpElement = data;
 		}
 	},
 	actions: {
