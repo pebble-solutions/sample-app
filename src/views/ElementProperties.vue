@@ -1,5 +1,5 @@
 <template>
-    <AppModal id="elementProperties" title="Propriétés" :cancel-btn="true" :submit-btn="true" :pending="pending" @submit="record">
+    <AppModal id="elementProperties" title="Propriétés" :cancel-btn="true" :submit-btn="true" :pending="pending" :display="display" @submit="record">
         <div class="mb-3">
             <label for="element_name" class="form-label">Nom</label>
             <input type="text" class="form-control" id="element_name" name="name" v-model="tmpElement.name">
@@ -32,7 +32,8 @@ import {mapState} from 'vuex'
 export default {
     data() {
         return {
-            pending: false
+            pending: false,
+            display: true
         }
     },
 
@@ -45,13 +46,41 @@ export default {
     },
 
     methods: {
+        /**
+         * Appel le système d'enregistrement
+         */
         record() {
-            
+            this.$app.record(this, this.$store.state.tmpElement, {
+                pending: this.pending
+            })
+            .then((data) => {
+                this.$store.dispatch('refreshOpened', data);
+                this.close();
+            });
+        },
+
+        /**
+         * Ferme la vue
+         */
+        close() {
+            this.$router.push('/element/'+this.openedElement.id);
         }
+    },
+
+    /**
+     * Lorsqu'on quite la route active, la boite modale est fermée
+     */
+    beforeRouteLeave(from, to, next) {
+        this.display = false;
+        next();
     },
 
     beforeMount() {
         this.$app.makeTmpElement(this);
+    },
+
+    unmounted() {
+        this.$app.clearTmpElement(this);
     }
 }
 </script>

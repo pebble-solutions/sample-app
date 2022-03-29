@@ -104,6 +104,24 @@ export default {
 			}
 		},
 
+		/**
+		 * Envoie une requête pour lister les éléments et les stocke dans le store
+		 * 
+		 * @param {Object} params Paramètre passés en GET dans l'URL
+		 * @param {String} action 'update' (défaut), 'replace', 'remove'
+		 */
+		listElements(params, action) {
+			action = typeof action === 'undefined' ? 'update' : action;
+			this.$app.listElements(this, params)
+			.then((data) => {
+				this.$store.dispatch('refreshElements', {
+					action,
+					elements: data
+				});
+			})
+			.catch(this.$app.catchError);
+		},
+
 		...mapActions(['closeElement'])
 	},
 
@@ -114,7 +132,7 @@ export default {
 		 */
 		isConnectedUser(val) {
 			if (val) {
-				this.$app.listElements(this);
+				this.listElements();
 			}
 		}
 	},
@@ -127,7 +145,7 @@ export default {
 
 	mounted() {
 		if (this.isConnectedUser) {
-			this.$app.listElements(this);
+			this.listElements();
 		}
 	}
 
