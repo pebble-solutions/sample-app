@@ -1,5 +1,5 @@
 <template>
-	<div class="px-4 py-2">
+	<div class="px-4 py-2" v-if="$store.state.login">
 		<div>
 			<img src="@/assets/pebble-dev.png" alt="Pebble Dev" class="logo">
 		</div>
