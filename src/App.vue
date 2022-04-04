@@ -5,7 +5,8 @@
 		:cfg-menu="cfgMenu"
 		:cfg-slots="cfgSlots"
 		
-		@auth-change="setLocal_user">
+		@auth-change="setLocal_user"
+		@structure-change="switchStructure">
 
 		<template v-slot:header>
 			<div class="mx-2 d-flex align-items-center" v-if="openedElement">
@@ -39,8 +40,8 @@
 
 		<template v-slot:menu>
 			<AppMenu>
-				<AppMenuItem href="/" look="dark" icon="bi bi-house">Home</AppMenuItem>
-				<AppMenuItem href="/about" look="dark" icon="bi bi-app">About</AppMenuItem>
+				<AppMenuItem href="/" look="dark" icon="bi bi-house">Accueil</AppMenuItem>
+				<AppMenuItem href="/about" look="dark" icon="bi bi-app">À propos</AppMenuItem>
 			</AppMenu>
 		</template>
 
@@ -52,7 +53,7 @@
 
 		<template v-slot:core>
 			<div class="px-2 bg-light">
-				<router-view/>
+				<router-view :cfg="cfg" v-if="isConnectedUser" />
 			</div>
 		</template>
 
@@ -76,7 +77,6 @@ export default {
 			cfg: CONFIG.cfg,
 			cfgMenu: CONFIG.cfgMenu,
 			cfgSlots: CONFIG.cfgSlots,
-			appController: null,
 			pending: {
 				elements: true
 			},
@@ -122,31 +122,24 @@ export default {
 			.catch(this.$app.catchError);
 		},
 
-		...mapActions(['closeElement'])
-	},
-
-	watch: {
 		/**
-		 * Observe l'état de connexion de l'utilisateur. Si l'utilisateur se connecte,
-		 * les éléments sont chargés depuis l'API
+		 * Change de structure, vide le store
+		 * 
+		 * @param {Integer} structureId
 		 */
-		isConnectedUser(val) {
-			if (val) {
-				this.listElements();
-			}
-		}
+		switchStructure(structureId) {
+			this.$router.push('/');
+			this.$store.dispatch('switchStructure', structureId);
+			this.listElements();
+		},
+
+		...mapActions(['closeElement'])
 	},
 
 	components: {
 		AppWrapper,
 		AppMenu,
 		AppMenuItem
-	},
-
-	mounted() {
-		if (this.isConnectedUser) {
-			this.listElements();
-		}
 	}
 
 }

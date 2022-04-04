@@ -5,11 +5,6 @@ export default createStore({
 		structures: [],
 		activeStructureId: null,
 		login: null,
-		mkg: {
-			config: {
-				THEME_COLOR: 'black'
-			}
-		},
 		elements: [],
 		openedElement: null,
 		tmpElement: null
@@ -20,16 +15,6 @@ export default createStore({
 		}
 	},
 	mutations: {
-		/**
-		 * Met à jour les informations de configuration
-		 * @param {Object} state Le state de l'instance VueX
-		 * @param {Object} payload Les valeurs de configuration à écrire
-		 */
-		mkgConfig(state, payload) {
-			state.mkg.config = payload;
-		},
-
-		
 		/**
 		 * Charge un objet dans openedElement
 		 * @param {Object} state Le state de l'instance VueX
@@ -132,6 +117,15 @@ export default createStore({
 		 */
 		tmpElement(state, data) {
 			state.tmpElement = data;
+		},
+
+		/**
+		 * Enregistre la structure active dans le store
+		 * @param {Object} state Le state de vueX
+		 * @param {Integer} structureId L'id de la structure à activer
+		 */
+		setStructureId(state, structureId) {
+			state.activeStructureId = structureId;
 		}
 	},
 	actions: {
@@ -212,6 +206,18 @@ export default createStore({
 		logout(context) {
 			context.commit('setLogin', null);
 			context.commit('setStructures', []);
+		},
+
+		/**
+		 * Bascule sur une structure
+		 * @param {Object} context L'instance vueX
+		 * @param {Integer} payload L'ID de la structure active
+		 */
+		switchStructure(context, payload) {
+			context.commit('close');
+			context.commit('tmpElement', null);
+			context.commit('replaceElements', []);
+			context.commit('setStructureId', payload);
 		}
 	},
 	modules: {

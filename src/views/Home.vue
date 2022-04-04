@@ -5,6 +5,27 @@
 		</div>
 		<h1 class="text-center">Bienvenue dans votre nouvelle application</h1>
 		<hr>
+		
+		<form class="card my-4" method="post" @submit.prevent="recordNew()" v-if="tmpElement">
+			<div class="card-body">
+				<h2>Créer un nouvel enregistrement</h2>
+				<div class="mb-3">
+					<label for="element_name" class="form-label">Nom</label>
+					<input type="text" class="form-control" id="element_name" name="name" v-model="tmpElement.name">
+				</div>
+
+				<div class="mb-3">
+					<label for="element_description" class="form-label">Description</label>
+					<textarea type="text" class="form-control" id="element_description" name="description" v-model="tmpElement.description"></textarea>
+				</div>
+
+				<button class="btn btn-primary btn-lg" type="submit" :disabled="pending.element">
+					<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" v-if="pending.element"></span>
+					Créer
+				</button>
+			</div>
+		</form>
+		
 		<h2>Bibliothèques pré-installés</h2>
 		<ul>
 			<li><a href="https://getbootstrap.com/docs/5.0/getting-started/introduction/" target="_blank">Bootstrap 5</a></li>
@@ -38,7 +59,49 @@
 
 <script>
 
+import {mapState} from 'vuex';
+
 export default {
-	name: 'Home'
+	name: 'Home',
+
+	data() {
+		return {
+			pending: {
+				element: false
+			}
+		}
+	},
+
+	computed: {
+		...mapState(['tmpElement'])
+	},
+
+	methods: {
+		/**
+		 * Enregistre un nouvel élément.
+		 * Étape 1 : appel la fonction record
+		 * Étape 2 : enregistre la modification dans le store
+		 * Étape 3 : redirige la route vers le nouvel élément
+		 */
+		recordNew() {
+			this.$app.record(this, this.tmpElement, {
+				id: 0,
+				pending: this.pending.element
+			}).then((data) => {
+				console.log(data);
+				this.$store.dispatch('refreshElements', {
+					elements: [data]
+				});
+				this.$router.push('/element/'+data.id);
+			}).catch(this.$app.catchError);
+		}
+	},
+
+	mounted() {
+		this.$store.commit('tmpElement', {
+			name: '',
+			description: ''
+		});
+	}
 }
 </script>
