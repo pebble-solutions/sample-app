@@ -4,7 +4,9 @@
         "module": "sample",
         "moduleLabel": "Sample module",
         "aside": true,
-        "app_mode": "default"
+        "app_mode": "default",
+        "ppp": "private",
+        "logos": null
     },
     "cfgMenu": {
         "href": null

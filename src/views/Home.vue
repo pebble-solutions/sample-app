@@ -1,7 +1,7 @@
 <template>
-	<div class="px-4 py-2" v-if="$store.state.login">
+	<div class="py-2" v-if="$store.state.login">
 		<div>
-			<img src="@/assets/pebble-dev.png" alt="Pebble Dev" class="logo">
+			<img src="@/assets/pebble-dev.png" alt="Pebble Dev" class="logo w-100">
 		</div>
 		<h1 class="text-center">Bienvenue dans votre nouvelle application</h1>
 		<hr>
