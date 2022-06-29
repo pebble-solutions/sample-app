@@ -143,5 +143,5 @@ Pour un développement local optimal, voici les pré-requis indispensables :
 - La machine locale doit disposer de git et npm (`sudo apt install git npm`)
 
 ## Debug
-A l'installation, si erreur *Error: ENOSPC: System limit for number of file watchers reached*
+A l'installation, si erreur *Error: ENOSPC: System limit for number of file watchers reached*  
 `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
