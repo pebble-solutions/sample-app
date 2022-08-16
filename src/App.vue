@@ -111,15 +111,17 @@ export default {
 		 * @param {String} action 'update' (défaut), 'replace', 'remove'
 		 */
 		listElements(params, action) {
-			action = typeof action === 'undefined' ? 'update' : action;
-			this.$app.listElements(this, params)
-			.then((data) => {
-				this.$store.dispatch('refreshElements', {
-					action,
-					elements: data
-				});
-			})
-			.catch(this.$app.catchError);
+			if (this.isConnectedUser) {
+				action = typeof action === 'undefined' ? 'update' : action;
+				this.$app.listElements(this, params)
+				.then((data) => {
+					this.$store.dispatch('refreshElements', {
+						action,
+						elements: data
+					});
+				})
+				.catch(this.$app.catchError);
+			}
 		},
 
 		/**
