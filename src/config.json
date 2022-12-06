@@ -25,7 +25,17 @@
         "header": true
     },
     "api": {
-        "elements": "sample"
+        "elements": "sample",
+        "prod": {
+            "pas": true,
+            "authServer": "auth.pebble.solutions",
+            "tls": true
+        },
+        "dev": {
+            "pas": true,
+            "authServer": "127.0.0.1:3333",
+            "tls": false
+        }
     },
     "firebaseConfig": {
         "prod": {
