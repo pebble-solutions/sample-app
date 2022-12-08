@@ -134,7 +134,10 @@ export default {
 		switchStructure(structureId) {
 			this.$router.push('/');
 			this.$store.dispatch('switchStructure', structureId);
-			this.listElements();
+
+			if (this.isConnectedUser) {
+				this.listElements();
+			}
 		},
 
 		...mapActions(['closeElement'])
