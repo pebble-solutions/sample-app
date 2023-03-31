@@ -7,13 +7,12 @@
         "aside": true,
         "app_mode": "default",
         "ppp": "private",
-        "logos": null,
-        "backAction": "/",
-        "backNavigation": true
+        "logos": null
     },
     "domains": {
         "prod": "pebble.solutions",
-        "dev": "localhost"
+        "dev": "localhost",
+        "test": "pebble.recipes"
     },
     "cfgMenu": {
         "href": null
@@ -27,6 +26,11 @@
     "api": {
         "elements": "sample",
         "prod": {
+            "pas": true,
+            "authServer": "auth.pebble.solutions",
+            "tls": true
+        },
+        "test": {
             "pas": true,
             "authServer": "auth.pebble.solutions",
             "tls": true
@@ -46,6 +50,15 @@
             "storageBucket": "ace-charter-310713.appspot.com",
             "messagingSenderId": "914156232758",
             "appId": "APP ID REGISTERED FOR PRODUCTION"
+        },
+        "test": {
+            "apiKey": "AIzaSyAm-yEHEBuXt_2frDrNrH2o3mT0Ffj_4v0",
+            "authDomain": "ace-charter-310713.firebaseapp.com",
+            "databaseURL": "https://ace-charter-310713-default-rtdb.europe-west1.firebasedatabase.app",
+            "projectId": "ace-charter-310713",
+            "storageBucket": "ace-charter-310713.appspot.com",
+            "messagingSenderId": "914156232758",
+            "appId": "APP ID REGISTERED FOR TEST"
         },
         "dev": {
             "apiKey": "AIzaSyAzwQE4rI03KgtFYEN2zkXhqUA1-agVQsA",
