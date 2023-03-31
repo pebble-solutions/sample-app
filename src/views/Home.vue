@@ -88,7 +88,6 @@ export default {
 				id: 0,
 				pending: this.pending.element
 			}).then((data) => {
-				console.log(data);
 				this.$store.dispatch('refreshElements', {
 					elements: [data]
 				});

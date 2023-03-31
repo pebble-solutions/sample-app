@@ -97,8 +97,6 @@ export default {
 			if (user) {
 				this.$store.dispatch('login', user);
 				this.isConnectedUser = true;
-
-				console.log(this.$app.firebase_user);
 			}
 			else {
 				this.$store.dispatch('logout');
