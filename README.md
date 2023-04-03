@@ -10,17 +10,13 @@ sudo wget https://storage.googleapis.com/pebble-public-cdn/pebbleapp -O /usr/loc
 ```
 Cette commande est à exécuter une seule fois par poste. Pour mettre à jour le programme, voir pebbleapp upgrade.
 
-**Dernière version de pebbleapp : 1.0.6**
+**Dernière version de pebbleapp : 1.0.7**
 
 ### Créer un nouveau projet d'application
 
 *Version supportée : 1.0.1*
 
-Par convention, on développera les projets d'application dans le dossier /srv/www/apps/<nom_application>
-
-```shell
-cd /srv/www/apps
-```
+Vous pouvez créer une application depuis n'importe quel dossier accessible de votre système de fichier local.
 
 Lancez pebbleapp pour créer une nouvelle application basée sur sample.
 
@@ -57,6 +53,20 @@ Une fois la connexion établie, il est possible d'envoyer le premier commit sur 
 git push -u origin main
 ```
 
+### Cloner une application depuis github
+
+*Version supportée : 1.0.7*
+
+Cette commande va récupérer une application disponible sur github, installer les sous-modules et les dépendances afin qu'elle soit disponible sur votre machine locale.
+
+
+```shell
+pebbleapp clone <depot> <destination>
+```
+
+- *depot* doit être l'adresse ssh d'un dépôt existant sur github (ex : git@github.com:pebble-solutions/mon-app.git)
+- *destination* doit être le dossier de copie sur votre machine locale (ex : mon-app)
+
 ### Mettre à jour les sous modules
 
 *Version supportée : 1.0.4*
@@ -64,7 +74,7 @@ git push -u origin main
 L'application utilise des sous-modules distants qui peuvent être mis à jour depuis le dossier de travail :
 
 ```shell
-cd /srv/www/apps/<nom_application>
+cd /chemin/vers/<nom_application>
 ```
 
 ```shell
@@ -75,6 +85,8 @@ pebbleapp update
 
 *Version supportée : 1.0*
 
+Depuis le dossier dans lequel est stocké votre application :
+
 ```shell
 pebbleapp serve
 ```
@@ -82,6 +94,8 @@ pebbleapp serve
 ### Compiler l'application
 
 *Version supportée : 1.0*
+
+Depuis le dossier dans lequel est stocké votre application :
 
 ```shell
 pebbleapp build
@@ -103,6 +117,34 @@ pebbleapp version
 pebbleapp upgrade
 ```
 
+### Déployer l'application
+
+*Version supportée : 1.0.7*
+
+Cette commande nécessite d'avoir créé plusieurs domaines correspondant aux différents environnement d'exécution :
+
+| domaine | dossier serveur | Environnement | Branche |
+| ---- | --- | --- | --- |
+| [APPNAME].pebble.solutions | APPNAME/prod | Production (prod) | **main** |
+| [APPNAME].pebble.recipes | APPNAME/preprod | Pré-production (prod) | **main** |
+| [APPNAME]-test.pebble.recipes | APPNAME/test | Test (test) | **testing**, unstable, main |
+| [APPNAME]-dev.pebble.recipes | APPNAME/dev | Dévelopement (dev) | **unstable**, testing, main |
+
+La commande compilera l'application depuis la bonne branche et la déploiera sur le serveur, dans le dossier correspondant. Elle sera alors accessible en ligne sur le domaine référencé.
+
+```shell
+pebbleapp deploy <env>
+```
+
+Env peut être
+- dev
+- test
+- prod
+
+**Pour le déploiement en production**, il vous sera possible de tester l'application sur un domaine intermédiaire (pré-production) avant de procéder à la mise en ligne finale. Pour les autres environnements, le déploiement est immédiat.
+
+Pour les environnements *test* et *dev*, le système va tester l'existence des branches indiquées dans le tableau précédent, par ordre de priorité. Ainsi, pour l'environnement de test, si la branche testing n'existe pas, c'est la branche unstable qui sera utilisée et ainsi de suite jusqu'à la branche main. La présence de branches testing ou unstable n'est donc pas indispensable pour déployer l'environnement test ou dev.
+
 ### Release logs
 
 | Version | Mise à jour                                          |
@@ -116,6 +158,7 @@ pebbleapp upgrade
 | 1.0.4   | Correction de bug : update ne prenait pas en compte les branches détachées (detached HEAD) |
 | 1.0.5   | Correction de bug                                   |
 | 1.0.6   | Le serveur npm ne démarre plus par défaut à la création d'une application. |
+| 1.0.7   | Ajout des arguments `clone` et `deploy` |
 
 ## Configuration initiale de l'application
 
@@ -134,6 +177,7 @@ Ouvrir le fichier **src/config.json**.
 | `cfg.backAction`          | String    | Route pour la flèche de retour                                           | */*           |
 | `cfg.backNavigation`      | Boolean   | Affiche ou non la flèche de retour                                       | *true*        |
 | `domains.prod`            | String    | Nom de domaine du point d'entré en environement de production.           | *pebble.solutions* |
+| `domains.test`            | String    | Nom de domaine du point d'entré en environement de test.           | *pebble.recipes* |
 | `domains.dev`             | String    | Nom de domaine du point d'entré en environement de développement.        | *localhost*   |
 | `cfgMenu.href`            | String    | Lien du menu de configuration du module. Si null, le module n'a pas de vue de configuration | *null* |
 | `cfgSlots.menu`           | Boolean   | Affiche l'espace Menu | *true* |
@@ -141,13 +185,13 @@ Ouvrir le fichier **src/config.json**.
 | `cfgSlots.core`           | Boolean   | Affiche l'espace principal de l'application | *true* |
 | `cfgSlots.header`         | Boolean   | Affiche la barre d'outil en en-tête de l'application | *true* |
 | `api.elements`            | String    | Nom de l'API de base à utiliser pour lister, afficher et enregistrer les éléments principaux (Ex : *projet*) | *sample* |
-| `firebaseConfig`          | Object    | Configuration publique des comptes firebase. Chaque environement d'exécution dispose d'une configuration (**prod** et **dev**). L'environement *dev* est déjà préconfiguré sur une application sample. Pour l'environnement de production, il faudra référencer l'application dans la console firebase. | *object* |
+| `firebaseConfig`          | Object    | Configuration publique des comptes firebase. Chaque environement d'exécution dispose d'une configuration (**prod**, **test** et **dev**). L'environement *dev* est déjà préconfiguré sur une application sample. Pour l'environnement de production et de test, il faudra référencer l'application dans la console firebase. | *object* |
 
 ## Paramétrage du serveur local
 
 Pour un développement local optimal, voici les pré-requis indispensables :
 
-- Le serveur contenant l'API doit être sur local.fe.tld
+- Vous devez ajouter votre application dans une licence (dev, test ou prod) sur firebase pour pouvoir la démarrer.
 - Le serveur NE DOIT PAS nécessiter un certificat SSL (https désactivé, voir https://github.com/cairnmanagement/docker#d%C3%A9sactiver-le-https-du-serveur-de-production)
 - La machine locale doit disposer de git et npm (`sudo apt install git npm`)
 
