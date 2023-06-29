@@ -76,7 +76,7 @@ export default {
          */
         record() {
             this.pending = true;
-            this.$store.dispatch('updateElements', [this.tmpElement]);
+            this.$assets.getCollection("elements").updateCollection([this.tmpElement]);
             this.pending = false;
             this.display = false;
         },

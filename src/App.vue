@@ -114,18 +114,14 @@ export default {
 		initCollections() {
 			const elementsCollection = new AssetsCollection(this, {
 				assetName: 'elements',
-				apiRoute: 'v2/sample',
-				updateAction: 'updateElements',
-				resetAction: 'resetElements'
+				apiRoute: 'v2/sample'
 			});
 
 			elementsCollection.reset();
 
 			const typesCollection = new AssetsCollection(this, {
 				assetName: 'types',
-				apiRoute: 'v2/sample/types',
-				updateAction: 'updateTypes',
-				resetAction: 'resetTypes'
+				apiRoute: 'v2/sample/types'
 			});
 
 			typesCollection.reset();

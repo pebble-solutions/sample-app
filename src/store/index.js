@@ -1,5 +1,4 @@
 import { createStore } from 'vuex'
-import { dataCollectionMutation } from '../js/app/services/store';
 
 export default createStore({
 	state: {
@@ -44,19 +43,6 @@ export default createStore({
 		},
 
 		/**
-		 * Met à jour une collection de données dans le store
-		 * 
-		 * @param {object} state Le state de VueX
-		 * @param {object} collectionOptions Options de la collection à faire mutter
-		 * - assetName  	Nom de la clé au niveau du state
-		 * - collection 	Informations à stocker dans le state
-		 * - action     	'refresh' (par défaut), 'replace', 'remove'
-		 */
-		dataCollection(state, collectionOptions) {
-			dataCollectionMutation(state, collectionOptions)
-		},
-
-		/**
 		 * Renseigne l'élément actif
 		 * 
 		 * @param {Object} state Le state de vueX
@@ -93,59 +79,7 @@ export default createStore({
 		 */
 		switchStructure(context, payload) {
 			context.commit('setStructureId', payload);
-		},
-
-		/**
-		 * Met à jour les données de la collection d'éléments
-		 * 
-		 * @param {object} context L'instance de VueX
-		 * @param {Array} collection La collection à mettre à jour
-		 */
-		updateElements(context, collection) {
-			context.commit('dataCollection', {
-				assetName: 'elements',
-				collection
-			});
-		},
-
-		/**
-		 * Vide les données stockées dans la collection d'éléments
-		 * 
-		 * @param {object} context L'instance VueX
-		 */
-		resetElements(context) {
-			context.commit('dataCollection', {
-				assetName: 'elements',
-				collection: [],
-				action: 'replace'
-			});
-		},
-
-		/**
-		 * Met à jour les données de la collection de types
-		 * 
-		 * @param {object} context L'instance de VueX
-		 * @param {Array} collection La collection à mettre à jour
-		 */
-		updateTypes(context, collection) {
-			context.commit('dataCollection', {
-				assetName: 'types',
-				collection
-			});
-		},
-
-		/**
-		 * Vide les données stockées dans la collection de types
-		 * 
-		 * @param {object} context L'instance VueX
-		 */
-		resetTypes(context) {
-			context.commit('dataCollection', {
-				assetName: 'types',
-				collection: [],
-				action: 'replace'
-			});
-		},
+		}
 	},
 	modules: {
 	}
