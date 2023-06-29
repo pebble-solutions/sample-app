@@ -81,9 +81,22 @@ export default {
 		 * Étape 2 : enregistre la modification dans le store
 		 * Étape 3 : redirige la route vers le nouvel élément
 		 */
-		recordNew() {
-			this.$store.dispatch("updateElements", [this.tmpElement]);
-			//this.$router.push('/element/'+data.id);
+		async recordNew() {
+			this.pending.element = true;
+
+			try {
+				const data = await this.$app.api.post('v2/sample', this.tmpElement, {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				});
+				this.$store.dispatch("updateElements", [data]);
+				this.$router.push('/element/'+data.id);
+			} catch (e) {
+				this.$app.catchError(e);
+			} finally {
+				this.pending.element = false;
+			}
 		}
 	}
 }

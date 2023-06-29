@@ -17,8 +17,14 @@
 
 <script>
 export default {
-	props: {
-		cfg: Object
+	data() {
+		return {
+			cfg: null
+		}
+	},
+
+	beforeMount() {
+		this.cfg = this.$app.cfg;
 	}
 }
 </script>

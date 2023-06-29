@@ -7,7 +7,21 @@
         "aside": true,
         "app_mode": "default",
         "ppp": "private",
-        "logos": null
+        "logos": null,
+        "appMenu": [
+            {
+                "label": "Accueil",
+                "icon": "bi bi-house",
+                "key": "home",
+                "href": "/"
+            },
+            {
+                "label": "À propos",
+                "icon": "bi bi-info-square",
+                "key": "about",
+                "href": "/about"
+            }
+        ]
     },
     "domains": {
         "prod": "pebble.solutions",
@@ -18,7 +32,7 @@
         "href": null
     },
     "cfgSlots": {
-        "menu": true,
+        "menu": false,
         "list": true,
         "core": true,
         "header": true
