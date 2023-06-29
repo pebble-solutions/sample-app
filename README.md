@@ -174,6 +174,11 @@ Ouvrir le fichier **src/config.json**.
 | `cfg.aside`               | Boolean   | Affiche ou non la barre latérale des raccourcis                          | *true*        |
 | `cfg.app_mode`            | String    | *default* : Affichage de l'application avec l'ensemble des éléments d'interface. *standalone* Affichage de l'application avec une interface n'autorisant pas la navigation vers d'autres modules | *default* |
 | `cfg.ppp`                 | String    | Mode de fonctionnement général de l'interface : *private* est l'environnement backoffice, *partner* est un environnement backoffice simplifié nécessitant une authentification, *public* ne nécessite pas d'authentification | *private* |
+| `cfg.appMenu`             | Array     | Éléments du menu principal de l'application qui seront affichés dans la barre latérale. |     |
+| `cfg.appMenu[].label`     | String    | Libellé de l'élément de menu pour l'affichage. |     |
+| `cfg.appMenu[].icon`      | String    | Icon de la librairie boostrap icon (début par *bi bi-*) |     |
+| `cfg.appMenu[].key`       | String    | Clé unique de l'élément du menu |     |
+| `cfg.appMenu[].href`      | String    | Route de l'élément du menu référencé dans le routeur |     |
 | `cfg.logos`               | String    | Chemin vers le logo de l'application. Logo Pebble par défaut             | *null*        |
 | `cfg.backAction`          | String    | Route pour la flèche de retour                                           | */*           |
 | `cfg.backNavigation`      | Boolean   | Affiche ou non la flèche de retour                                       | *true*        |
@@ -185,7 +190,10 @@ Ouvrir le fichier **src/config.json**.
 | `cfgSlots.list`           | Boolean   | Affiche l'espace Liste des éléments chargés | *true* |
 | `cfgSlots.core`           | Boolean   | Affiche l'espace principal de l'application | *true* |
 | `cfgSlots.header`         | Boolean   | Affiche la barre d'outil en en-tête de l'application | *true* |
-| `api.elements`            | String    | Nom de l'API de base à utiliser pour lister, afficher et enregistrer les éléments principaux (Ex : *projet*) | *sample* |
+| `api`            | Object    | Configuration de l'autentification à l'API. Chaque environement d'exécution dispose d'une configuration (**prod**, **test** et **dev**) | *object* |
+| `api[ENV].pas`            | Boolean    | L'environnement utilise Pebble Authenticator Server | *true* |
+| `api[ENV].authServer`     | String    | URL d'accès au serveur d'authentification | *auth.pebble.solutions* |
+| `api[ENV].tls`            | String    | Le serveur d'authentification est sécurisé (https) | *true* |
 | `firebaseConfig`          | Object    | Configuration publique des comptes firebase. Chaque environement d'exécution dispose d'une configuration (**prod**, **test** et **dev**). L'environement *dev* est déjà préconfiguré sur une application sample. Pour l'environnement de production et de test, il faudra référencer l'application dans la console firebase. | *object* |
 
 ## Paramétrage du serveur local
