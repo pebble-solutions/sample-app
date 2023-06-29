@@ -1,53 +1,96 @@
 <template>
-    <div v-if="openedElement">
+    <div v-if="element">
+
         <div class="alert alert-danger" v-if="error">{{error}}</div>
-        <h1>{{openedElement.name}}</h1>
-        <p>{{openedElement.description}}</p>
-        <div>{{openedElement.id}}</div>
-        <pre>{{openedElement}}</pre>
+
+        <h1>{{element.name}}</h1>
+        <p>{{element.description}}</p>
+        <h2>ID de la ressource : {{element.id}}</h2>
+        <pre>{{element}}</pre>
+
+        <div v-if="type">
+            <h2>ID du type {{ element.type_id }}</h2>
+            <pre v-if="!pending.type">{{ type }}</pre>
+            <div v-else class="text-secondary">
+                <span class="spinner-border"></span>
+                Chargement...
+            </div>
+        </div>
         
         <router-view></router-view>
+    </div>
+
+    <div v-if="pending.element" class="fs-4 text-center py-4 text-secondary">
+        <span class="spinner-border"></span>
+        Chargement...
+    </div>
+
+    <div class="alert alert-danger" v-if="!element && !pending.element">
+        <i class="bi bi-file-x"></i> Aucune ressource trouvée
     </div>
 </template>
 
 <script>
-
-import {mapState} from 'vuex'
 
 export default {
 
     data() {
         return {
             pending: {
-                extended: true
+                type: true,
+                element: true
             },
+            element: null,
+            type: null,
             error: null
         }
     },
 
-    computed: {
-        ...mapState(['openedElement'])
-    },
-
     methods: {
         /**
-         * Charge un élément depuis le store dans openedElement.
-         * Si les données étendues ne sont pas chargées, envoie une demande à l'API afin 
-         * de s'assurer d'avoir l'ensemble des sous-objets
-         * @param {Integer} id
+         * Cette méthode charge une ressource depuis le store.
+         * 
+         * Une ressource doit être définie par un nom dans data et dans pending de data.
+         * Une AssetsCollection doit être préalablement déclarée dans l'AssetsController. Le nom de cette 
+         * collection doit être {assetName}+s.
+         * 
+         * @param {string} assetName Le nom de la ressource à chargé tel que déclaré dans data
+         * @param {mixed} id L'ID à charger
+         * 
+         * @return {Promise}
          */
-        load(id) {
-            this.pending.extended;
-            this.$store.dispatch('load', id);
-            if (!this.openedElement.extendedData) {
-                this.$app.loadExtended(this, this.openedElement).then((data) => {
-                    data.extendedData = true;
-                    this.$store.dispatch('refreshOpened', data);
-                }).catch((error) => {
-                    this.error = this.$app.catchError(error, {
-                        mode : 'message'
-                    })
-                });
+        async loadAssetById(assetName, id) {
+            this.pending[assetName] = true;
+            try {
+                this[assetName] = await this.$assets.getCollection(`${assetName}s`).getById(id);
+            } catch (e) {
+                this[assetName] = null;
+                this.$app.catchError(e);
+            } finally {
+                this.pending[assetName] = false;
+            }
+        },
+
+        /**
+         * Cette méthode charge un nouvelle élément dans la vue.
+         * 
+         * @param {string} id L'ID de l'élément à charger
+         */
+        async load(id) {
+            await this.loadAssetById("element", id);
+            if (this.element) {
+
+                this.$store.commit("openedElement", this.element);
+
+                if (this.element.type_id) {
+                    await this.loadAssetById("type", this.element.type_id);
+                }
+                else {
+                    this.type = null;
+                }
+            }
+            else {
+                this.$store.commit("openedElement", null);
             }
         }
     },
@@ -61,15 +104,6 @@ export default {
 
 
     /**
-     * Lorsqu'on quite la route active, l'élément ouvert est vidé.
-     */
-    beforeRouteLeave(from, to, next) {
-        this.$store.dispatch('unload');
-        next();
-    },
-
-
-    /**
      * Lorsque l'élément est monté, on va lire l'élément à charger passé en paramètre.
      */
     mounted() {
@@ -77,6 +111,10 @@ export default {
          * Ici on va charger l'élément ouvert afin de le stocker dans le store
          */
         this.load(this.$route.params.id);
+    },
+
+    beforeUnmount() {
+        this.$store.commit("openedElement", null);
     }
 }
 

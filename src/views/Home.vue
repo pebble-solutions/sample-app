@@ -59,8 +59,6 @@
 
 <script>
 
-import {mapState} from 'vuex';
-
 export default {
 	name: 'Home',
 
@@ -68,12 +66,12 @@ export default {
 		return {
 			pending: {
 				element: false
+			},
+			tmpElement: {
+				name: "",
+				description: ""
 			}
 		}
-	},
-
-	computed: {
-		...mapState(['tmpElement'])
 	},
 
 	methods: {
@@ -84,23 +82,9 @@ export default {
 		 * Étape 3 : redirige la route vers le nouvel élément
 		 */
 		recordNew() {
-			this.$app.record(this, this.tmpElement, {
-				id: 0,
-				pending: this.pending.element
-			}).then((data) => {
-				this.$store.dispatch('refreshElements', {
-					elements: [data]
-				});
-				this.$router.push('/element/'+data.id);
-			}).catch(this.$app.catchError);
+			this.$store.dispatch("updateElements", [this.tmpElement]);
+			//this.$router.push('/element/'+data.id);
 		}
-	},
-
-	mounted() {
-		this.$store.commit('tmpElement', {
-			name: '',
-			description: ''
-		});
 	}
 }
 </script>

@@ -24,7 +24,6 @@
         "header": true
     },
     "api": {
-        "elements": "sample",
         "prod": {
             "pas": true,
             "authServer": "auth.pebble.solutions",

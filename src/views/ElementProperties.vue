@@ -1,24 +1,35 @@
 <template>
-    <AppModal id="elementProperties" title="Propriétés" :cancel-btn="true" :submit-btn="true" :pending="pending" :display="display" @submit="record">
-        <div class="mb-3">
-            <label for="element_name" class="form-label">Nom</label>
-            <input type="text" class="form-control" id="element_name" name="name" v-model="tmpElement.name">
-        </div>
-
-        <div class="row g-3">
-            <div class="col mb-3">
-                <label for="element_qt" class="form-label">Quantité</label>
-                <input type="text" class="form-control" id="element_qt" name="qt" v-model="tmpElement.qt">
+    <AppModal 
+        id="elementProperties" 
+        title="Propriétés" 
+        :cancel-btn="true" 
+        :submit-btn="true" 
+        :display="display" 
+        :pending="pending" 
+        @submit="record" 
+        @modal-hide="routeToParent()"
+        >
+        <div v-if="tmpElement">
+            <div class="mb-3">
+                <label for="element_name" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="element_name" name="name" v-model="tmpElement.name">
             </div>
-            <div class="col mb-3">
-                <label for="element_amt" class="form-label">Montant</label>
-                <input type="text" class="form-control" id="element_amt" name="amt" v-model="tmpElement.amt">
+    
+            <div class="row g-3">
+                <div class="col mb-3">
+                    <label for="element_qt" class="form-label">Quantité</label>
+                    <input type="text" class="form-control" id="element_qt" name="qt" v-model="tmpElement.qt">
+                </div>
+                <div class="col mb-3">
+                    <label for="element_amt" class="form-label">Montant</label>
+                    <input type="text" class="form-control" id="element_amt" name="amt" v-model="tmpElement.amt">
+                </div>
             </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="element_description" class="form-label">Description</label>
-            <textarea rows="6" class="form-control" id="element_description" name="description" v-model="tmpElement.description"></textarea>
+    
+            <div class="mb-3">
+                <label for="element_description" class="form-label">Description</label>
+                <textarea rows="6" class="form-control" id="element_description" name="description" v-model="tmpElement.description"></textarea>
+            </div>
         </div>
     </AppModal>
 </template>
@@ -27,18 +38,13 @@
 
 import AppModal from '@/components/pebble-ui/AppModal.vue'
 
-import {mapState} from 'vuex'
-
 export default {
     data() {
         return {
             pending: false,
+            tmpElement: null,
             display: true
         }
-    },
-
-    computed: {
-        ...mapState(['openedElement', 'tmpElement'])
     },
 
     components: {
@@ -47,40 +53,44 @@ export default {
 
     methods: {
         /**
-         * Appel le système d'enregistrement
+         * Initialise les valeurs
+         * 
+         * Récupère les informations de la ressource depuis la collection d'éléments et crée
+         * une copie temporaire pour le formulaire.
+         * 
+         * @return {Promise}
          */
-        record() {
-            this.$app.record(this, this.$store.state.tmpElement, {
-                pending: this.pending
-            })
-            .then((data) => {
-                this.$store.dispatch('refreshOpened', data);
-                this.close();
-            });
+        async init() {
+            try {
+                const element = await this.$assets.getCollection("elements").getById(this.$route.params.id);
+                this.tmpElement = JSON.parse(JSON.stringify(element));
+            } catch (e) {
+                this.tmpElement = null;
+                this.$app.catchError(e);
+            }
+
         },
 
         /**
-         * Ferme la vue
+         * Appel le système d'enregistrement
          */
-        close() {
-            this.$router.push('/element/'+this.openedElement.id);
+        record() {
+            this.pending = true;
+            this.$store.dispatch('updateElements', [this.tmpElement]);
+            this.pending = false;
+            this.display = false;
+        },
+
+        /**
+         * Retourne à la vue précédente
+         */
+        routeToParent() {
+            this.$router.go(-1);
         }
     },
 
-    /**
-     * Lorsqu'on quite la route active, la boite modale est fermée
-     */
-    beforeRouteLeave(from, to, next) {
-        this.display = false;
-        next();
-    },
-
-    beforeMount() {
-        this.$app.makeTmpElement(this);
-    },
-
-    unmounted() {
-        this.$app.clearTmpElement(this);
+    async beforeMount() {
+        await this.init();
     }
 }
 </script>

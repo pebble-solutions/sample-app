@@ -5,8 +5,7 @@
 		:cfg-menu="cfgMenu"
 		:cfg-slots="cfgSlots"
 		
-		@auth-change="setLocal_user"
-		@structure-change="switchStructure">
+		@auth-change="setLocal_user">
 
 		<template v-slot:header>
 			<div class="mx-2 d-flex align-items-center" v-if="openedElement">
@@ -53,7 +52,7 @@
 
 		<template v-slot:core>
 			<div class="px-2 bg-light">
-				<router-view :cfg="cfg" v-if="isConnectedUser" />
+				<router-view v-if="isConnectedUser" />
 			</div>
 		</template>
 
@@ -66,7 +65,8 @@
 import AppWrapper from '@/components/pebble-ui/AppWrapper.vue'
 import AppMenu from '@/components/pebble-ui/AppMenu.vue'
 import AppMenuItem from '@/components/pebble-ui/AppMenuItem.vue'
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'vuex'
+import { AssetsCollection } from './js/app/services/AssetsCollection'
 
 import CONFIG from "@/config.json"
 
@@ -105,46 +105,59 @@ export default {
 		},
 
 		/**
-		 * Envoie une requête pour lister les éléments et les stocke dans le store
-		 * 
-		 * @param {Object} params Paramètre passés en GET dans l'URL
-		 * @param {String} action 'update' (défaut), 'replace', 'remove'
+		 * Initialise les collections de données au niveau du contrôleur d'assets
 		 */
-		listElements(params, action) {
-			if (this.isConnectedUser) {
-				action = typeof action === 'undefined' ? 'update' : action;
-				this.$app.listElements(this, params)
-				.then((data) => {
-					this.$store.dispatch('refreshElements', {
-						action,
-						elements: data
-					});
-				})
-				.catch(this.$app.catchError);
-			}
-		},
+		initCollections() {
+			const elementsCollection = new AssetsCollection(this, {
+				assetName: 'elements',
+				apiRoute: 'v2/sample',
+				updateAction: 'updateElements',
+				resetAction: 'resetElements'
+			});
 
-		/**
-		 * Change de structure, vide le store
-		 * 
-		 * @param {Integer} structureId
-		 */
-		switchStructure(structureId) {
-			this.$router.push('/');
-			this.$store.dispatch('switchStructure', structureId);
+			elementsCollection.reset();
 
-			if (this.isConnectedUser) {
-				this.listElements();
-			}
-		},
+			const typesCollection = new AssetsCollection(this, {
+				assetName: 'types',
+				apiRoute: 'v2/sample/types',
+				updateAction: 'updateTypes',
+				resetAction: 'resetTypes'
+			});
 
-		...mapActions(['closeElement'])
+			typesCollection.reset();
+
+			this.$assets.addCollection("elements", elementsCollection);
+			this.$assets.addCollection("types", typesCollection);
+		}
 	},
 
 	components: {
 		AppWrapper,
 		AppMenu,
 		AppMenuItem
+	},
+
+	mounted() {
+		this.$app.addEventListener('structureChanged', async (structureId) => {
+
+			this.$store.dispatch('switchStructure', structureId);
+
+			this.$router.push('/');
+			if (this.isConnectedUser) {
+				this.initCollections();
+
+				this.pending.elements = true;
+				try {
+					await this.$assets.getCollection("elements").load();
+				}
+				catch (e) {
+					this.$app.catchError(e);
+				}
+				finally {
+					this.pending.elements = false;
+				}
+			}
+		});
 	}
 
 }
