@@ -10,7 +10,7 @@ sudo wget https://storage.googleapis.com/pebble-public-cdn/pebbleapp -O /usr/loc
 ```
 Cette commande est à exécuter une seule fois par poste. Pour mettre à jour le programme, voir pebbleapp upgrade.
 
-**Dernière version de pebbleapp : 1.0.8**
+**Dernière version de pebbleapp : 1.1.0**
 
 ### Créer un nouveau projet d'application
 
@@ -145,7 +145,23 @@ Env peut être
 
 Pour les environnements *test* et *dev*, le système va tester l'existence des branches indiquées dans le tableau précédent, par ordre de priorité. Ainsi, pour l'environnement de test, si la branche testing n'existe pas, c'est la branche unstable qui sera utilisée et ainsi de suite jusqu'à la branche main. La présence de branches testing ou unstable n'est donc pas indispensable pour déployer l'environnement test ou dev.
 
-### Release logs
+### Importer un environnement
+
+*Version supportée : 1.1.0*
+
+```shell
+pebbleapp importenv <nom_environnement>
+```
+
+Cette commande récupère un environnement pré-configuré sur un serveur distant et le copie dans le fichier *.env.json*.
+
+Environnements disponibles :
+
+| Nom | Description | Commande |
+|-----|-------------|----------|
+| devonline | Propose une configuration vers un serveur d'authentification en ligne. | `pebbleapp importenv devonline` |
+
+## Release logs
 
 | Version | Mise à jour                                          |
 |---------|------------------------------------------------------|
@@ -160,6 +176,7 @@ Pour les environnements *test* et *dev*, le système va tester l'existence des b
 | 1.0.6   | Le serveur npm ne démarre plus par défaut à la création d'une application. |
 | 1.0.7   | Ajout des arguments `clone` et `deploy` |
 | 1.0.8   | Correction de bug : deploy envoyait les fichiers dans un sous-dossier dist. Les environnements n'étaient pas correctement pris en charge |
+| 1.1.0   | Création automatique des fichiers .env.json lors des commandes `create`, `update` et `clone`. Ajout de la commande `importenv` |
 
 ## Configuration initiale de l'application
 
